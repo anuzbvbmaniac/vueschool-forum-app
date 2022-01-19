@@ -1,5 +1,12 @@
 <template>
-  <AppHeadline :description="forum.description" :title="forum.name"/>
+  <AppHeadline
+    :description="forum.description"
+    :title="forum.name"
+    :createButton="true"
+    :buttonTitle="'Start New Thread'"
+    :routeNameForButton="'ThreadCreate'"
+    :routeParams="{forumId: forum.id}"
+  />
 
   <main class="pt-0 pb-16">
     <ThreadList :threads="threads"/>

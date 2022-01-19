@@ -87,7 +87,7 @@
               v-model="activeUser.bio"
               class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
               name="bio"
-              placeholder="Write few words about yourself."
+              placeHolder="Write few words about yourself."
               rows="4"
             />
             </div>
@@ -130,7 +130,8 @@
           <div class="mt-6 grid grid-cols-2 gap-4">
             <button
               class="w-full py-2 px-4 border border-gray-200 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-100 focus:outline-none"
-              type="reset">
+              @click="cancel"
+            >
               Cancel
             </button>
             <button
@@ -139,6 +140,7 @@
               Save
             </button>
           </div>
+
         </form>
       </div>
     </div>
@@ -162,23 +164,13 @@ export default {
       }
     }
   },
-  computed: {
-    userPosts () {
-      return this.$store.state.posts.filter(post => post.userId === this.user.id)
-    },
-    userPostsCount () {
-      return this.userPosts.length
-    },
-    userThreads () {
-      return this.$store.state.threads.filter(thread => thread.userId === this.user.id)
-    },
-    userThreadsCount () {
-      return this.userThreads.length
-    }
-  },
   methods: {
     save () {
-      this.$store.dispatch('updateUser', this.activeUser)
+      this.$store.dispatch('updateUser', { ...this.activeUser })
+      this.cancel()
+    },
+    cancel () {
+      this.$router.push({ name: 'ProfileShow' })
     }
   }
 }

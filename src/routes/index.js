@@ -10,6 +10,8 @@ import Forum from '@/pages/Forum'
 import ForumShow from '@/pages/ForumShow'
 import CategoryShow from '@/pages/CategoryShow'
 import ProfileShow from '@/pages/ProfileShow'
+import ThreadCreate from '@/pages/ThreadCreate'
+import Category from '@/pages/Category'
 
 const routes = [
   {
@@ -20,7 +22,14 @@ const routes = [
   {
     path: '/profile',
     name: 'ProfileShow',
-    component: ProfileShow
+    component: ProfileShow,
+    meta: { toTop: true, smoothScroll: true }
+  },
+  {
+    path: '/profile/edit',
+    name: 'ProfileEdit',
+    component: ProfileShow,
+    props: { edit: true }
   },
   {
     path: '/category/:id',
@@ -32,22 +41,6 @@ const routes = [
     path: '/thread',
     name: 'Thread',
     component: Thread
-  },
-  {
-    path: '/category',
-    name: 'Category',
-    component: Thread
-  },
-  {
-    path: '/forum',
-    name: 'Forum',
-    component: Forum
-  },
-  {
-    path: '/forum/:id',
-    name: 'ForumShow',
-    component: ForumShow,
-    props: true
   },
   {
     path: '/thread/:id',
@@ -69,6 +62,28 @@ const routes = [
     }
   },
   {
+    path: '/forum/:forumId/thread/create',
+    name: 'ThreadCreate',
+    component: ThreadCreate,
+    props: true
+  },
+  {
+    path: '/category',
+    name: 'Category',
+    component: Category
+  },
+  {
+    path: '/forum',
+    name: 'Forum',
+    component: Forum
+  },
+  {
+    path: '/forum/:id',
+    name: 'ForumShow',
+    component: ForumShow,
+    props: true
+  },
+  {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
     component: NotFound
@@ -77,5 +92,11 @@ const routes = [
 
 export default createRouter({
   history: createWebHistory(),
-  routes
+  routes,
+  scrollBehavior (to) {
+    const scroll = {}
+    if (to.meta.toTop) scroll.top = 0
+    if (to.meta.smoothScroll) scroll.behavior = 'smooth'
+    return scroll
+  }
 })

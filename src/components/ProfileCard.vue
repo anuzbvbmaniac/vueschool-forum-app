@@ -52,7 +52,7 @@
             Posts
           </dt>
           <dd class="mt-1 text-sm text-gray-900">
-            {{ userPostsCount }}
+            {{ user.postsCount }}
           </dd>
         </div>
         <div class="sm:col-span-1">
@@ -60,10 +60,10 @@
             Threads
           </dt>
           <dd class="mt-1 text-sm text-gray-900">
-            {{ userThreadsCount }}
+            {{ user.threadsCount }}
           </dd>
         </div>
-        <div class="sm:col-span-2">
+        <div v-if="user.bio" class="sm:col-span-2">
           <dt class="text-sm font-medium text-gray-500">
             Bio
           </dt>
@@ -71,56 +71,45 @@
             {{ user.bio }}
           </dd>
         </div>
-        <div class="sm:col-span-2 border-t pt-4 text-center">
+        <div v-if="user.website" class="sm:col-span-2 border-t pt-4 text-center">
           <dt class="text-sm font-medium text-gray-500">
             Website
           </dt>
           <dd class="mt-1 text-sm text-gray-900">
-            <a href="">www.anuzpandey.dev</a>
+            <a href="">{{ user.website }}</a>
           </dd>
         </div>
         <div class="sm:col-span-2 border-t pt-4 text-center">
           <div class="mt-0 flex flex-col justify-center space-y-3 sm:flex-row sm:space-y-0 sm:space-x-4">
-            <button
+            <router-link
+              :to="{ name: 'ProfileEdit' }"
               class="inline-flex justify-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               type="button"
             >
               <PencilIcon aria-hidden="true" class="-ml-1 mr-2 h-5 w-5 text-gray-400"/>
               <span>Edit Profile</span>
-            </button>
+            </router-link>
           </div>
         </div>
       </dl>
     </div>
+
   </article>
-  <UserProfileCardEditor :user="user"/>
 </template>
 
 <script>
 import { PencilIcon } from '@heroicons/vue/solid'
-import { mapGetters } from 'vuex'
-import UserProfileCardEditor from '@/components/UserProfileCardEditor'
 
 export default {
   name: 'ProfileCard',
-  components: {
-    UserProfileCardEditor,
-    PencilIcon
-  },
-  computed: {
-    ...mapGetters({ user: 'authUser' }),
-    userPosts () {
-      return this.$store.state.posts.filter(post => post.userId === this.user.id)
-    },
-    userPostsCount () {
-      return this.userPosts.length
-    },
-    userThreads () {
-      return this.$store.state.threads.filter(thread => thread.userId === this.user.id)
-    },
-    userThreadsCount () {
-      return this.userThreads.length
+  props: {
+    user: {
+      required: true,
+      type: Object
     }
+  },
+  components: {
+    PencilIcon
   }
 }
 </script>

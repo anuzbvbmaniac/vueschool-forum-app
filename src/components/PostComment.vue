@@ -2,9 +2,9 @@
   <div class="flex px-4 py-5 sm:px-6 mt-10 items-start space-x-4 pb-">
     <div class="flex-shrink-0">
       <img
-        alt=""
+        :alt="`${user.name} Profile Picture`"
         class="inline-block h-10 w-10 rounded-full"
-        src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+        :src="user.avatar"
       />
     </div>
     <div class="min-w-0 flex-1">
@@ -43,6 +43,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'PostComment',
   data () {
@@ -53,6 +55,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({ user: 'authUser' }),
     thread () {
       return this.threads.find(thread => thread.id === this.id)
     },
@@ -63,9 +66,7 @@ export default {
   methods: {
     save () {
       const post = {
-        text: this.text,
-        publishedAt: Math.floor(Date.now() / 1000),
-        userId: 'NnooaWj4KHVxbhKwO1pEdfaQDsD2'
+        text: this.text
       }
       this.$emit('save-post', { post })
       this.text = ''
